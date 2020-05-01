@@ -9,6 +9,7 @@
 
 TInt **A;
 TInt *RC;
+TInt **H;
 
 
 uint64_t ro(TInt **matrix, TUint m, TUint n)
@@ -58,9 +59,40 @@ void swap_columns(TInt **matrix, TUint order, TUint col1, TUint col2)
     }
 }
 
-void column_sort(TInt **matrix, TUint order, TUint r)
+
+TInt column_comp(TInt **matrix, TInt **tmp, TUint order)
 {
-    return;
+    uint64_t ro_matrix = ro(matrix, order, order);
+    uint64_t ro_tmp = ro(tmp, order, order);
+    return ro_matrix - ro_tmp;
+}
+
+
+TInt comp(TInt **matrix, TUint order, TUint col1, TUint col2)
+{
+    for (size_t i = 0; i < order; ++i) {
+        if (matrix[i][col1] != matrix[i][col2]) {
+            return matrix[i][col1] - matrix[i][col2];
+        }
+    }
+    return 0;
+}
+
+void column_sort(TInt **matrix, TUint order)
+{
+    for (size_t i = 0; i < order - 1; ++i) {
+        for (size_t j = 0; j < order - i - 1; ++j) {
+            // TInt **tmp = matrix_create(order, order);
+            // matriscopy(tmp, matrix, order);
+            // swap_columns(tmp, order, j, j + 1);
+            // if (column_comp(matrix, tmp, order) > 0) {
+            //     swap_columns(matrix, order, j, j + 1);
+            // }
+            if (comp(matrix, order, j, j + 1) > 0) {
+                swap_columns(matrix, order, j, j + 1);
+            }
+        }
+    }
 }
 
 bool array_equal(TInt *arr1, TInt *arr2, TUint order)
@@ -72,16 +104,17 @@ bool array_equal(TInt *arr1, TInt *arr2, TUint order)
     return true;
 }
 
-void core(TInt **H, TUint order, TUint r, bool flag)
+void core(TUint order, TUint r, bool flag)
 {
-    if (r == order) {
-        column_sort(H, order, r);
-    }
+    if (r >= order - 1) {
+        column_sort(H, order);
 
-    if (flag || ro2(H[r], order) < ro2(A[r], order)) {
-        for (size_t i = 0; i < order; ++i) {
-            A[r][i] = H[r][i];
+        if (flag || ro2(H[r], order) < ro2(A[r], order)) {
+            for (size_t i = 0; i < order; ++i) {
+                A[r][i] = H[r][i];
+            }
         }
+        return;
     }
 
     TInt **M = matrix_create(1, order);
@@ -89,39 +122,41 @@ void core(TInt **H, TUint order, TUint r, bool flag)
         M[0][i] = 1;
     }
 
-    uint16_t k = -1;
+    int16_t k = -1;
 
-    for (size_t i = r; r < order; ++i) {
+    for (size_t i = r; i < order; ++i) {
         swap_rows(H, order, r, i);
-        column_sort(H, order, r);
-        if (ro2(H[r], order) == ro(M, 1, order)) {
+        column_sort(H, order);
+        if (ro2(H[r], order) == ro2(M[0], order)) {
             ++k;
             RC[k] = i;
         }
-        if (ro2(H[r], order) < ro(M, 1, order)) {
+
+        if (ro2(H[r], order) < ro2(M[0], order)) {
             k = 0;
             RC[k] = i;
             for (size_t j = 0; j < order; ++j) {
                 M[0][j] = H[r][j];
             }
         }
+
         swap_rows(H, order, r, i);
     }
 
-    if (flag || ro(M, 1, order) < ro2(A[r], order)) {
+    if (flag || ro2(M[0], order) < ro2(A[r], order)) {
         for (size_t i = 0; i < order; ++i) {
             A[r][i] = M[0][i];
         }
+
         swap_rows(H, order, r, RC[0]);
-        column_sort(H, order, r);
-        if (r < order)
-            core(H, order, r + 1, true);
+        column_sort(H, order);
+        core(order, r + 1, true);
         swap_rows(H, order, r, RC[0]);
-        for (size_t i = 0; i < k; ++i) {
+
+        for (int16_t i = 1; i < k; ++i) {
             swap_rows(H, order, r, RC[i]);
-            column_sort(H, order, r);
-            if (r < order)
-                core(H, order, r + 1, false);
+            column_sort(H, order);
+            core(order, r + 1, false);
             swap_rows(H, order, r, RC[i]);
         }
     }
@@ -129,9 +164,8 @@ void core(TInt **H, TUint order, TUint r, bool flag)
     if (!flag && array_equal(M[0], A[r], order)) {
         for (size_t i = 0; i < k; ++i) {
             swap_rows(H, order, r, RC[i]);
-            column_sort(H, order, r);
-            if (r < order)
-                core(H, order, r + 1, false);
+            column_sort(H, order);
+            core(order, r + 1, false);
             swap_rows(H, order, r, RC[i]);
         }
     }
@@ -141,22 +175,27 @@ void core(TInt **H, TUint order, TUint r, bool flag)
 void min_matrix(TInt **H0, TUint order)
 {
     RC = malloc(order * sizeof(*RC));
+    for (size_t i = 0; i < order; ++i) {
+        RC[i] = i;
+    }
+
     A = normalize(H0, order);
-    TInt **H;
+    H = matrix_create(order, order);
     matriscopy(H, H0, order);
 
     for (size_t j = 0; j < order; ++j) {
         swap_columns(H, order, 0, j);
-        
         for (size_t i = 0; i < order; ++i) {
             swap_rows(H, order, 0, i);
             H = normalize(H, order);
-            core(H, order, 2, false);
+            core(order, 1, false);
             swap_rows(H, order, 0, i);
         }
 
         H = H0;
     }
+    free(RC);
+    matrix_destroy(H, order);
 }
 
 void negation_column(TInt **matrix, TUint order, TUint column)
@@ -226,7 +265,7 @@ void matrix_destroy(TInt **matrix, TUint order)
 {
     for (size_t i = 0; i < order; ++i) {
         free(matrix[i]);
-    } 
+    }
     free(matrix);
 }
 
@@ -238,4 +277,11 @@ void debug_print(TInt **matrix, TUint order)
          }
          printf("\n");
      }
+}
+
+TInt **get_result(TUint order)
+{
+    TInt **mat = matrix_create(order, order);
+    matriscopy(mat, A, order);
+    return mat;
 }

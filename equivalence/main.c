@@ -7,15 +7,14 @@
 int main()
 {
     uint16_t order = 0;
-    TInt **matrix;
-    FILE *fp = fopen("h4_1", "r");
+    FILE *fp = fopen("data/h4_2", "r");
     if (!fp) {
         printf("ERROR: open file");
         exit(1);
     }
 
     fscanf(fp, "%d", &order);
-    matrix = matrix_create(order, order);
+    TInt **matrix = matrix_create(order, order);
 
     for (size_t i = 0; i < order; ++i) {
         for (size_t j = 0; j < order; ++j) {
@@ -25,15 +24,11 @@ int main()
 
     printf("matrix\n");
     debug_print(matrix, order);
-//    printf("%lu ", ro2(matrix[0], order));
-//    int16_t (* ptr2)[0] = (int16_t (*)[0]) *(matrix);
+    printf("min matrix\n");
 
-//    for (size_t i = 0; i < order; ++i) {
-//        printf("%d ", ptr2[0][i]);
-//    }
-
-//    printf("kek");
-//    printf("%lu ", ro(ptr2, 1, order));
+    min_matrix(matrix, order);
+    TInt **res = get_result(order);
+    debug_print(res, order);
 
     matrix_destroy(matrix, order);
 

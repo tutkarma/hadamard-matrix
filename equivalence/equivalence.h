@@ -18,7 +18,11 @@ TInt **normalize(TInt **matrix, TUint order);
 TInt **matrix_create(TUint m, TUint n);
 void matrix_destroy(TInt **matrix, TUint order);
 void debug_print(TInt **matrix, TUint order);
+void core(TUint order, TUint r, bool flag);
 void swap_rows(TInt **matrix, TUint order, TUint row1, TUint row2);
 void swap_columns(TInt **matrix, TUint order, TUint col1, TUint col2);
+TInt column_comp(TInt **matrix, TInt **tmp, TUint order);
+TInt comp(TInt **matrix, TUint order, TUint col1, TUint col2);
+TInt **get_result(TUint order);
 
 #endif
