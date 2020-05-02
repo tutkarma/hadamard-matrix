@@ -11,6 +11,17 @@ TInt **A;
 TInt *RC;
 TInt **H;
 
+void core(TUint order, TUint r, bool flag);
+void column_sort(TInt **matrix, TUint order);
+TInt column_comp(TInt **matrix, TUint order, TUint col1, TUint col2);
+void normalize(TInt **matrix, TUint order);
+void swap_rows(TInt **matrix, TUint order, TUint row1, TUint row2);
+void swap_columns(TInt **matrix, TUint order, TUint col1, TUint col2);
+void negation_row(TInt **matrix, TUint order, TUint row);
+void negation_column(TInt **matrix, TUint order, TUint column);
+uint64_t ro(TInt **matrix, TUint m, TUint n);
+uint64_t ro2(TInt *row, TUint sz);
+
 
 uint64_t ro(TInt **matrix, TUint m, TUint n)
 {
@@ -69,15 +80,21 @@ TInt column_comp(TInt **matrix, TUint order, TUint col1, TUint col2)
     return 0;
 }
 
+// void column_sort(TInt **matrix, TUint order)
+// {
+//     for (size_t i = 0; i < order - 1; ++i) {
+//         for (size_t j = 0; j < order - i - 1; ++j) {
+//             if (column_comp(matrix, order, j, j + 1) > 0) {
+//                 swap_columns(matrix, order, j, j + 1);
+//             }
+//         }
+//     }
+// }
+
 void column_sort(TInt **matrix, TUint order)
 {
-    for (size_t i = 0; i < order - 1; ++i) {
-        for (size_t j = 0; j < order - i - 1; ++j) {
-            if (column_comp(matrix, order, j, j + 1) > 0) {
-                swap_columns(matrix, order, j, j + 1);
-            }
-        }
-    }
+
+
 }
 
 bool array_equal(TInt *arr1, TInt *arr2, TUint order)
