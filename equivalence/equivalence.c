@@ -154,6 +154,7 @@ void core(TUint order, TUint r, bool flag)
             swap_rows(H, order, r, RC[i]);
         }
     }
+
     matrix_destroy(M, 1);
 }
 
@@ -165,24 +166,22 @@ void min_matrix(TInt **H0, TUint order)
         RC[i] = i;
     }
 
-    A = normalize(H0, order);
-    H = matrix_create(order, order);
-    matriscopy(H, H0, order);
+    A = matrix_create(order, order);
+    matriscopy(A, H0, order);
+    normalize(A, order);
+    H = H0;
 
     for (size_t j = 0; j < order; ++j) {
         swap_columns(H, order, 0, j);
         for (size_t i = 0; i < order; ++i) {
             swap_rows(H, order, 0, i);
-            H = normalize(H, order);
+            normalize(H, order);
             core(order, 1, false);
             swap_rows(H, order, 0, i);
         }
 
         H = H0;
     }
-
-    free(RC);
-    matrix_destroy(H, order);
 }
 
 void negation_column(TInt **matrix, TUint order, TUint column)
@@ -206,27 +205,21 @@ void negation_row(TInt **matrix, TUint order, TUint row)
 }
 
 
-TInt **normalize(TInt **matrix, TUint order)
+void normalize(TInt **matrix, TUint order)
 {
-    TInt **norm_matrix;
-    norm_matrix = matrix_create(order, order);
-    matriscopy(norm_matrix, matrix, order);
-
     // normalize row
     for (size_t i = 0; i < order; ++i) {
-        if (norm_matrix[0][i] != 0) {
-            negation_column(norm_matrix, order, i);
+        if (matrix[0][i] != 0) {
+            negation_column(matrix, order, i);
         }
     }
 
     // normalize column
     for (size_t i = 0; i < order; ++i) {
-        if (norm_matrix[i][0] != 0) {
-            negation_row(norm_matrix, order, i);
+        if (matrix[i][0] != 0) {
+            negation_row(matrix, order, i);
         }
     }
-
-    return norm_matrix;
 }
 
 TInt **matrix_create(TUint m, TUint n)
@@ -293,7 +286,6 @@ void reset(TUint order)
     matrix_destroy(H, order);
     vector_destroy(RC);
 }
-
 
 bool matrisequal(TInt **mat1, TInt **mat2, TUint order)
 {
