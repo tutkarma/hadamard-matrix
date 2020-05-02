@@ -59,16 +59,7 @@ void swap_columns(TInt **matrix, TUint order, TUint col1, TUint col2)
     }
 }
 
-
-TInt column_comp(TInt **matrix, TInt **tmp, TUint order)
-{
-    uint64_t ro_matrix = ro(matrix, order, order);
-    uint64_t ro_tmp = ro(tmp, order, order);
-    return ro_matrix - ro_tmp;
-}
-
-
-TInt comp(TInt **matrix, TUint order, TUint col1, TUint col2)
+TInt column_comp(TInt **matrix, TUint order, TUint col1, TUint col2)
 {
     for (size_t i = 0; i < order; ++i) {
         if (matrix[i][col1] != matrix[i][col2]) {
@@ -82,13 +73,7 @@ void column_sort(TInt **matrix, TUint order)
 {
     for (size_t i = 0; i < order - 1; ++i) {
         for (size_t j = 0; j < order - i - 1; ++j) {
-            // TInt **tmp = matrix_create(order, order);
-            // matriscopy(tmp, matrix, order);
-            // swap_columns(tmp, order, j, j + 1);
-            // if (column_comp(matrix, tmp, order) > 0) {
-            //     swap_columns(matrix, order, j, j + 1);
-            // }
-            if (comp(matrix, order, j, j + 1) > 0) {
+            if (column_comp(matrix, order, j, j + 1) > 0) {
                 swap_columns(matrix, order, j, j + 1);
             }
         }
@@ -169,12 +154,13 @@ void core(TUint order, TUint r, bool flag)
             swap_rows(H, order, r, RC[i]);
         }
     }
+    matrix_destroy(M, 1);
 }
 
 
 void min_matrix(TInt **H0, TUint order)
 {
-    RC = malloc(order * sizeof(*RC));
+    RC = vector_create(order);
     for (size_t i = 0; i < order; ++i) {
         RC[i] = i;
     }
@@ -194,6 +180,7 @@ void min_matrix(TInt **H0, TUint order)
 
         H = H0;
     }
+
     free(RC);
     matrix_destroy(H, order);
 }
@@ -244,8 +231,7 @@ TInt **normalize(TInt **matrix, TUint order)
 
 TInt **matrix_create(TUint m, TUint n)
 {
-    TInt **matrix;
-    matrix = malloc(m * sizeof(*matrix));
+    TInt **matrix = malloc(m * sizeof(*matrix));
     if (!matrix) {
         printf("ERROR: malloc matrix");
         exit(1);
@@ -261,12 +247,27 @@ TInt **matrix_create(TUint m, TUint n)
     return matrix;
 }
 
+TInt *vector_create(TUint order)
+{
+    TInt *vec = malloc(order * sizeof(*vec));
+    if (!vec) {
+        printf("ERROR: malloc vector\n");
+        exit(1);
+    }
+    return vec;
+}
+
 void matrix_destroy(TInt **matrix, TUint order)
 {
     for (size_t i = 0; i < order; ++i) {
         free(matrix[i]);
     }
     free(matrix);
+}
+
+void vector_destroy(TInt *vec)
+{
+    free(vec);
 }
 
 void debug_print(TInt **matrix, TUint order)
@@ -284,4 +285,23 @@ TInt **get_result(TUint order)
     TInt **mat = matrix_create(order, order);
     matriscopy(mat, A, order);
     return mat;
+}
+
+void reset(TUint order)
+{
+    matrix_destroy(A, order);
+    matrix_destroy(H, order);
+    vector_destroy(RC);
+}
+
+
+bool matrisequal(TInt **mat1, TInt **mat2, TUint order)
+{
+    for (size_t i = 0; i < order; ++i) {
+        for (size_t j = 0; j < order; ++j) {
+            if (mat1[i][j] != mat2[i][j])
+                return false;
+        }
+    }
+    return true;
 }

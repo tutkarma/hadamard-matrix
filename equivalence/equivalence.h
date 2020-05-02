@@ -4,25 +4,31 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
-typedef int16_t TInt;
-typedef uint16_t TUint;
+typedef int32_t TInt;
+typedef uint32_t TUint;
 
 
-uint64_t ro(TInt **matrix, TUint m, TUint n);
-uint64_t ro2(TInt *row, TUint sz);
-void matriscopy(TInt **destmat, TInt **srcmat, TUint order);
-void min_matrix(TInt **H0, TUint order);
-void negation_column(TInt **matrix, TUint order, TUint column);
-void negation_row(TInt **matrix, TUint order, TUint row);
-TInt **normalize(TInt **matrix, TUint order);
 TInt **matrix_create(TUint m, TUint n);
+TInt *vector_create(TUint order);
 void matrix_destroy(TInt **matrix, TUint order);
+void vector_destroy(TInt *vec);
+void matriscopy(TInt **destmat, TInt **srcmat, TUint order);
+bool matrisequal(TInt **mat1, TInt **mat2, TUint order);
 void debug_print(TInt **matrix, TUint order);
+
+void min_matrix(TInt **H0, TUint order);
 void core(TUint order, TUint r, bool flag);
+void column_sort(TInt **matrix, TUint order);
+TInt column_comp(TInt **matrix, TUint order, TUint col1, TUint col2);
+TInt **normalize(TInt **matrix, TUint order);
 void swap_rows(TInt **matrix, TUint order, TUint row1, TUint row2);
 void swap_columns(TInt **matrix, TUint order, TUint col1, TUint col2);
-TInt column_comp(TInt **matrix, TInt **tmp, TUint order);
-TInt comp(TInt **matrix, TUint order, TUint col1, TUint col2);
+void negation_row(TInt **matrix, TUint order, TUint row);
+void negation_column(TInt **matrix, TUint order, TUint column);
+uint64_t ro(TInt **matrix, TUint m, TUint n);
+uint64_t ro2(TInt *row, TUint sz);
 TInt **get_result(TUint order);
+void reset(TUint order);
+
 
 #endif
