@@ -12,6 +12,7 @@ TInt *RC;
 TInt **H;
 
 void core(TUint order, TUint r, bool flag);
+void sort(TInt **matrix, TUint order, TUint l, TUint r);
 void column_sort(TInt **matrix, TUint order);
 TInt column_comp(TInt **matrix, TUint order, TUint col1, TUint col2);
 void normalize(TInt **matrix, TUint order);
@@ -80,21 +81,61 @@ TInt column_comp(TInt **matrix, TUint order, TUint col1, TUint col2)
     return 0;
 }
 
-// void column_sort(TInt **matrix, TUint order)
-// {
-//     for (size_t i = 0; i < order - 1; ++i) {
-//         for (size_t j = 0; j < order - i - 1; ++j) {
-//             if (column_comp(matrix, order, j, j + 1) > 0) {
-//                 swap_columns(matrix, order, j, j + 1);
-//             }
-//         }
-//     }
-// }
+void merge(TInt **matrix, TUint order, TUint l, TUint m, TUint r)
+{
+    TUint i = l, j = m + 1, k = l;
+    TUint n1 = m - l + 1;
+    TUint n2 = r - m;
+    TInt **tmp = matrix_create(order, order);
+    matriscopy(tmp, matrix, order);
+
+    while (i < n1 && j < n2) {
+        if (column_comp(tmp, order, i, j) <= 0) {
+            for (size_t l = 0; l < order; ++l) {
+                matrix[l][k] = tmp[l][i];
+            }
+            ++i;
+        } else {
+            for (size_t l = 0; l < order; ++l) {
+                matrix[l][k] = tmp[l][j];
+            }
+            ++j;
+        }
+        ++k;
+    }
+
+    while (i < n1) {
+        for (size_t l = 0; l < order; ++l) {
+            matrix[l][k] = tmp[l][i];
+        }
+        ++i;
+        ++k;
+    }
+
+    while (j < n2) {
+        for (size_t l = 0; l < order; ++l) {
+            matrix[l][k] = tmp[l][j];
+        }
+        ++j;
+        ++k;
+    }
+
+    matrix_destroy(tmp, order);
+}
+
+void sort(TInt **matrix, TUint order, TUint l, TUint r)
+{
+    if (l < r) {
+        TUint m = l + (r - l) / 2;
+        sort(matrix, order, l, m);
+        sort(matrix, order, m + 1, r);
+        merge(matrix, order, l, m, r);
+    }
+}
 
 void column_sort(TInt **matrix, TUint order)
 {
-
-
+    sort(matrix, order, 0, order - 1);
 }
 
 bool array_equal(TInt *arr1, TInt *arr2, TUint order)
@@ -196,9 +237,9 @@ void min_matrix(TInt **H0, TUint order)
             core(order, 1, false);
             swap_rows(H, order, 0, i);
         }
-
         H = H0;
     }
+    vector_destroy(RC);
 }
 
 void negation_column(TInt **matrix, TUint order, TUint column)
@@ -249,7 +290,7 @@ TInt **matrix_create(TUint m, TUint n)
     for (size_t i = 0; i < m; ++i) {
         matrix[i] = malloc(n * sizeof(**matrix));
         if (!matrix[i]) {
-            // осовободить память
+            free(matrix);
             printf("ERROR: malloc matrix");
             exit(1);
         }
@@ -300,8 +341,6 @@ TInt **get_result(TUint order)
 void reset(TUint order)
 {
     matrix_destroy(A, order);
-    matrix_destroy(H, order);
-    vector_destroy(RC);
 }
 
 bool matrisequal(TInt **mat1, TInt **mat2, TUint order)

@@ -16,7 +16,7 @@ void read_matrix(FILE *fp, TInt **matrix, TInt order)
 int main()
 {
     int32_t order = 0, order2 = 0;
-    FILE *fp = fopen("data/h16_1", "r");
+    FILE *fp = fopen("data/h4_1", "r");
     if (!fp) {
         printf("ERROR: open file");
         exit(1);
@@ -33,10 +33,10 @@ int main()
     TInt **res1 = get_result(order);
     debug_print(res1, order);
 
-    // reset(order);
+    reset(order);
     fclose(fp);
 
-    FILE *fp2 = fopen("data/h16_2", "r");
+    FILE *fp2 = fopen("data/h4_2", "r");
     if (!fp2) {
         printf("ERROR: open file");
         exit(1);
@@ -63,6 +63,6 @@ int main()
     matrix_destroy(res1, order);
     matrix_destroy(mat2, order2);
     matrix_destroy(res2, order2);
-
+    reset(order);
     return 0;
 }
