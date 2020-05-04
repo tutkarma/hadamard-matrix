@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.17)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
 project(hadamard-matrix)
 
-set(SOURCE_MAIN equivalence/main.c)
-set(SOURCE_LIB equivalence/equivalence.c)
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 
-add_library(equivalence STATIC ${SOURCE_LIB})
-add_executable(main ${SOURCE_MAIN})
+add_subdirectory(equivalence)
 
-target_link_libraries(equivalence m)
-target_link_libraries(main equivalence)
+enable_testing()
+
+add_subdirectory(tests)
