@@ -166,7 +166,7 @@ void core(TUint order, TUint r, bool flag)
         M[0][i] = 1;
     }
 
-    int16_t k = -1;
+    TUint k = -1;
 
     for (size_t i = r; i < order; ++i) {
         swap_rows(H, order, r, i);
@@ -197,7 +197,7 @@ void core(TUint order, TUint r, bool flag)
         core(order, r + 1, true);
         swap_rows(H, order, r, RC[0]);
 
-        for (int16_t i = 1; i < k; ++i) {
+        for (size_t i = 1; i < k; ++i) {
             swap_rows(H, order, r, RC[i]);
             column_sort(H, order);
             core(order, r + 1, false);
