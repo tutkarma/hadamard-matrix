@@ -13,6 +13,8 @@ static struct files_eq {
     {"../data/h4_1",  "../data/h4_2"},
     {"../data/h8_1",  "../data/h8_2"},
     {"../data/h16_1", "../data/h16_2"},
+    {"../data/h24_1", "../data/h24_2"},
+    // {"../data/h32_1", "../data/h32_2"},
 };
 
 static struct files_noneq {
@@ -20,6 +22,8 @@ static struct files_noneq {
     const char *file2;
 } files_noneq [] = {
     {"../data/h16_1", "../data/h16_3"},
+    {"../data/h24_1", "../data/h24_3"},
+    // {"../data/h32_1", "../data/h32_3"},
 };
 
 static const size_t files_eq_size = sizeof(files_eq)/sizeof(files_eq[0]);
@@ -107,6 +111,7 @@ Suite *matrix_equal_suite()
     Suite *s = suite_create("Equal Test Suite");
     TCase *tcase = tcase_create("Test Cases with equal matrix");
 
+    tcase_set_timeout(tcase, 3000);
     tcase_add_loop_test(tcase, test_equal_n_order, 0, files_eq_size);
     tcase_add_loop_test(tcase, test_nonequal_n_order, 0, files_noneq_size);
 
