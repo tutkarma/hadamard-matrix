@@ -14,6 +14,7 @@ static struct files_eq {
     {"../data/h8_1",  "../data/h8_2"},
     {"../data/h16_1", "../data/h16_2"},
     {"../data/h24_1", "../data/h24_2"},
+    {"../data/h28_1", "../data/h28_2"},
     // {"../data/h32_1", "../data/h32_2"},
 };
 
@@ -23,6 +24,7 @@ static struct files_noneq {
 } files_noneq [] = {
     {"../data/h16_1", "../data/h16_3"},
     {"../data/h24_1", "../data/h24_3"},
+    {"../data/h28_1", "../data/h28_3"},
     // {"../data/h32_1", "../data/h32_3"},
 };
 

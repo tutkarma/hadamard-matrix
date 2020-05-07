@@ -3,5 +3,4 @@ Testing/
 build/
 CMakeCache.txt
 Makefile
-*.cmake
 *.a
