@@ -32,11 +32,12 @@ static const size_t files_eq_size = sizeof(files_eq)/sizeof(files_eq[0]);
 static const size_t files_noneq_size = sizeof(files_noneq)/sizeof(files_noneq[0]);
 
 
-static void read_matrix(FILE *fp, TInt **matrix, TUint order)
+static void read_matrix(FILE *fp, Matrix matrix)
 {
+    TUint order = matrix->n;
     for (size_t i = 0; i < order; ++i) {
         for (size_t j = 0; j < order; ++j) {
-            fscanf(fp, "%d", &matrix[i][j]);
+            fscanf(fp, "%d", &matrix->mat[i][j]);
         }
     }
 }
@@ -46,31 +47,31 @@ START_TEST (test_equal_n_order)
     int32_t order = 0;
     FILE *fp = fopen(files_eq[_i].file1, "r");
     fscanf(fp, "%d", &order);
-    TInt **mat1 = matrix_create(order, order);
-    read_matrix(fp, mat1, order);
-    min_matrix(mat1, order);
-    TInt **res1 = get_result(order);
+    Matrix mat1 = matrix_create(order, order);
+    read_matrix(fp, mat1);
+    min_matrix(mat1);
+    Matrix res1 = get_result(order);
     reset(order);
     fclose(fp);
 
     FILE *fp2 = fopen(files_eq[_i].file2, "r");
     fscanf(fp2, "%d", &order);
-    TInt **mat2 = matrix_create(order, order);
-    read_matrix(fp2, mat2, order);
+    Matrix mat2 = matrix_create(order, order);
+    read_matrix(fp2, mat2);
 
-    min_matrix(mat2, order);
-    TInt **res2 = get_result(order);
+    min_matrix(mat2);
+    Matrix res2 = get_result(order);
     reset(order);
     fclose(fp2);
 
-    if (!matrisequal(res1, res2, order)) {
+    if (!matrisequal(res1, res2)) {
         ck_abort_msg("Min matrices are not equal\n");
     }
 
-    matrix_destroy(mat1, order);
-    matrix_destroy(res1, order);
-    matrix_destroy(mat2, order);
-    matrix_destroy(res2, order);
+    matrix_destroy(mat1);
+    matrix_destroy(res1);
+    matrix_destroy(mat2);
+    matrix_destroy(res2);
 }
 END_TEST
 
@@ -79,31 +80,31 @@ START_TEST (test_nonequal_n_order)
     int32_t order = 0;
     FILE *fp = fopen(files_noneq[_i].file1, "r");
     fscanf(fp, "%d", &order);
-    TInt **mat1 = matrix_create(order, order);
-    read_matrix(fp, mat1, order);
-    min_matrix(mat1, order);
-    TInt **res1 = get_result(order);
+    Matrix mat1 = matrix_create(order, order);
+    read_matrix(fp, mat1);
+    min_matrix(mat1);
+    Matrix res1 = get_result(order);
     reset(order);
     fclose(fp);
 
     FILE *fp2 = fopen(files_noneq[_i].file2, "r");
     fscanf(fp2, "%d", &order);
-    TInt **mat2 = matrix_create(order, order);
-    read_matrix(fp2, mat2, order);
+    Matrix mat2 = matrix_create(order, order);
+    read_matrix(fp2, mat2);
 
-    min_matrix(mat2, order);
-    TInt **res2 = get_result(order);
+    min_matrix(mat2);
+    Matrix res2 = get_result(order);
     reset(order);
     fclose(fp2);
 
-    if (matrisequal(res1, res2, order)) {
+    if (matrisequal(res1, res2)) {
         ck_abort_msg("Min matrices are equal\n");
     }
 
-    matrix_destroy(mat1, order);
-    matrix_destroy(res1, order);
-    matrix_destroy(mat2, order);
-    matrix_destroy(res2, order);
+    matrix_destroy(mat1);
+    matrix_destroy(res1);
+    matrix_destroy(mat2);
+    matrix_destroy(res2);
 }
 END_TEST
 
