@@ -115,6 +115,17 @@ Suite *matrix_equal_suite()
 
     tcase_set_timeout(tcase, 3000);
     tcase_add_loop_test(tcase, test_equal_n_order, 0, files_eq_size);
+
+    suite_add_tcase(s, tcase);
+    return s;
+}
+
+Suite *matrix_nonequal_suite()
+{
+    Suite *s = suite_create("Nonequal Test Suite");
+    TCase *tcase = tcase_create("Test Cases with nonequal matrix");
+
+    tcase_set_timeout(tcase, 3000);
     tcase_add_loop_test(tcase, test_nonequal_n_order, 0, files_noneq_size);
 
     suite_add_tcase(s, tcase);
@@ -127,8 +138,11 @@ int main()
     SRunner *sr;
 
     sr = srunner_create(matrix_equal_suite());
-    srunner_run_all(sr, CK_VERBOSE);
+    srunner_add_suite (sr, matrix_nonequal_suite());
     srunner_set_log (sr, "test.log");
+    srunner_set_xml (sr, "test.xml");
+    srunner_run_all(sr, CK_VERBOSE);
+
     number_failed = srunner_ntests_failed(sr);
     srunner_free(sr);
 
