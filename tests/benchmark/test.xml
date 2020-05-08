@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="http://check.sourceforge.net/xml/check_unittest.xslt"?>
+<testsuites xmlns="http://check.sourceforge.net/ns">
+  <datetime>2020-05-08 18:49:42</datetime>
+  <suite>
+    <title>Equal Test Suite</title>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:44</fn>
+      <id>test_equal_n_order</id>
+      <iteration>0</iteration>
+      <duration>0.000077</duration>
+      <description>Test Cases with equal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:44</fn>
+      <id>test_equal_n_order</id>
+      <iteration>1</iteration>
+      <duration>0.000239</duration>
+      <description>Test Cases with equal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:44</fn>
+      <id>test_equal_n_order</id>
+      <iteration>2</iteration>
+      <duration>0.005053</duration>
+      <description>Test Cases with equal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:44</fn>
+      <id>test_equal_n_order</id>
+      <iteration>3</iteration>
+      <duration>0.148864</duration>
+      <description>Test Cases with equal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:44</fn>
+      <id>test_equal_n_order</id>
+      <iteration>4</iteration>
+      <duration>0.855612</duration>
+      <description>Test Cases with equal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:44</fn>
+      <id>test_equal_n_order</id>
+      <iteration>5</iteration>
+      <duration>2.148801</duration>
+      <description>Test Cases with equal matrix</description>
+      <message>Passed</message>
+    </test>
+  </suite>
+  <suite>
+    <title>Nonequal Test Suite</title>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:77</fn>
+      <id>test_nonequal_n_order</id>
+      <iteration>0</iteration>
+      <duration>0.107728</duration>
+      <description>Test Cases with nonequal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:77</fn>
+      <id>test_nonequal_n_order</id>
+      <iteration>1</iteration>
+      <duration>0.884248</duration>
+      <description>Test Cases with nonequal matrix</description>
+      <message>Passed</message>
+    </test>
+    <test result="success">
+      <path>/home/karma/hadamard-matrix/tests</path>
+      <fn>test_equivalence.c:77</fn>
+      <id>test_nonequal_n_order</id>
+      <iteration>2</iteration>
+      <duration>2.230554</duration>
+      <description>Test Cases with nonequal matrix</description>
+      <message>Passed</message>
+    </test>
+  </suite>
+  <duration>6.385508</duration>
+</testsuites>
