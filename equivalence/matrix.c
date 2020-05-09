@@ -67,6 +67,11 @@ void vector_destroy(Vector vec)
     free(vec);
 }
 
+TInt matrix_size(Matrix matrix)
+{
+    return matrix->n;
+}
+
 void debug_print(Matrix matrix)
 {
     for (size_t i = 0; i < matrix->n; ++i) {
@@ -104,4 +109,38 @@ void matriscopy(Matrix destmat, Matrix srcmat)
             destmat->mat[i][j] = srcmat->mat[i][j];
         }
     }
+}
+
+Matrix matrix_xor(Matrix mat1, Matrix mat2)
+{
+    TUint order = mat1->n;
+    Matrix mat_xor = matrix_create(order, order);
+    for (size_t i = 0; i < order; ++i) {
+        for (size_t j = 0; j < order; ++j) {
+            mat_xor->mat[i][j] = mat1->mat[i][j] ^ mat2->mat[i][j];
+        }
+    }
+    return mat_xor;
+}
+
+Matrix matrix_from_file(const char *file_path)
+{
+    FILE *fp = fopen(file_path, "r");
+    if (!fp) {
+        printf("ERROR: open file");
+        exit(OPEN_FILE_ERROR);
+    }
+
+    TUint order;
+    fscanf(fp, "%d", &order);
+
+    Matrix matrix = matrix_create(order, order);
+    for (size_t i = 0; i < order; ++i) {
+        for (size_t j = 0; j < order; ++j) {
+            fscanf(fp, "%d", &matrix->mat[i][j]);
+        }
+    }
+    fclose(fp);
+
+    return matrix;
 }

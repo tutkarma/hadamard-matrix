@@ -8,8 +8,8 @@
 
 
 void min_matrix(Matrix H0);
-Matrix get_result(TUint order);
-void reset(TUint order);
+Matrix get_result();
+void reset();
 
 
 #endif

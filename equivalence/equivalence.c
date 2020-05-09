@@ -266,14 +266,15 @@ void normalize(Matrix matrix)
     }
 }
 
-Matrix get_result(TUint order)
+Matrix get_result()
 {
+    TUint order = matrix_size(A);
     Matrix mat = matrix_create(order, order);
     matriscopy(mat, A);
     return mat;
 }
 
-void reset(TUint order)
+void reset()
 {
     matrix_destroy(A);
 }
