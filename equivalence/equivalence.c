@@ -301,9 +301,7 @@ void reset()
 
 int find_min_matrix(Matrix H0, uint64_t time_limit)
 {
-    struct timespec abs_time;//,max_wait;
-    // memset(&max_wait, 0, sizeof(max_wait));
-    // max_wait.tv_sec = 60;
+    struct timespec abs_time;
 
     pthread_attr_t tattr;
     pthread_t tid;
