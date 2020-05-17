@@ -37,12 +37,12 @@ static const size_t files_noneq_size = sizeof(files_noneq)/sizeof(files_noneq[0]
 START_TEST (test_equal_n_order)
 {
     Matrix mat1 = matrix_from_file(files_eq[_i].file1);
-    find_min_matrix(mat1);
+    find_min_matrix(mat1, 60);
     Matrix res1 = get_result();
     reset();
 
     Matrix mat2 = matrix_from_file(files_eq[_i].file2);
-    find_min_matrix(mat2);
+    find_min_matrix(mat2, 60);
     Matrix res2 = get_result();
     reset();
 
@@ -60,12 +60,12 @@ END_TEST
 START_TEST (test_nonequal_n_order)
 {
     Matrix mat1 = matrix_from_file(files_noneq[_i].file1);
-    find_min_matrix(mat1);
+    find_min_matrix(mat1, 60);
     Matrix res1 = get_result();
     reset();
 
     Matrix mat2 = matrix_from_file(files_noneq[_i].file2);
-    find_min_matrix(mat2);
+    find_min_matrix(mat2, 60);
     Matrix res2 = get_result();
     reset();
 

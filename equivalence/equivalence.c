@@ -299,11 +299,11 @@ void reset()
     matrix_destroy(A);
 }
 
-int find_min_matrix(Matrix H0)
+int find_min_matrix(Matrix H0, uint64_t time_limit)
 {
-    struct timespec max_wait, abs_time;
-    memset(&max_wait, 0, sizeof(max_wait));
-    max_wait.tv_sec = 60;
+    struct timespec abs_time;//,max_wait;
+    // memset(&max_wait, 0, sizeof(max_wait));
+    // max_wait.tv_sec = 60;
 
     pthread_attr_t tattr;
     pthread_t tid;
@@ -311,8 +311,8 @@ int find_min_matrix(Matrix H0)
 
     pthread_mutex_lock(&calculating);
     clock_gettime(CLOCK_REALTIME, &abs_time);
-    abs_time.tv_sec += max_wait.tv_sec;
-    abs_time.tv_nsec += max_wait.tv_nsec;
+    abs_time.tv_sec += time_limit;
+    abs_time.tv_nsec += time_limit;
 
     pthread_attr_init(&tattr);
     pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);

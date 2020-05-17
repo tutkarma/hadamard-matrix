@@ -6,13 +6,18 @@
 #include "equivalence.h"
 
 
-int main()
+int main(int argc, char **argv)
 {
+    uint64_t time_limit = 60;
+    if (argc == 2) {
+        time_limit = atoi(argv[1]);
+    }
+
     Matrix mat1 = matrix_from_file("../data/h32_1");
     printf("matrix1\n");
     debug_print(mat1);
     printf("min matrix1\n");
-    find_min_matrix(mat1);
+    find_min_matrix(mat1, time_limit);
     Matrix res1 = get_result();
     debug_print(res1);
     reset();
@@ -21,7 +26,7 @@ int main()
     printf("matrix2\n");
     debug_print(mat2);
     printf("min matrix2\n");
-    find_min_matrix(mat2);
+    find_min_matrix(mat2, time_limit);
     Matrix res2 = get_result();
     debug_print(res2);
 
