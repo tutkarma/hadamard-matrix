@@ -20,7 +20,7 @@ target_link_libraries(test_equivalence equivalence ${LIBS} pthread)
 
 # Create testing target and redirect its output to `Testing` folder
 add_test(NAME test_equivalence COMMAND test_equivalence WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/Testing)
-set_tests_properties(test_equivalence PROPERTIES TIMEOUT 3000)
+set_tests_properties(test_equivalence PROPERTIES TIMEOUT 300000)
 
 include(FindValgrind)
 add_custom_target(valgrind_test_equivalence

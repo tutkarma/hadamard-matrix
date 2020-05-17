@@ -8,15 +8,11 @@
 
 int main()
 {
-    struct timespec max_wait;
-    memset(&max_wait, 0, sizeof(max_wait));
-    max_wait.tv_sec = 60;
-
     Matrix mat1 = matrix_from_file("../data/h32_1");
     printf("matrix1\n");
     debug_print(mat1);
     printf("min matrix1\n");
-    find_min_matrix(mat1, &max_wait);
+    find_min_matrix(mat1);
     Matrix res1 = get_result();
     debug_print(res1);
     reset();
@@ -25,7 +21,7 @@ int main()
     printf("matrix2\n");
     debug_print(mat2);
     printf("min matrix2\n");
-    find_min_matrix(mat2, &max_wait);
+    find_min_matrix(mat2);
     Matrix res2 = get_result();
     debug_print(res2);
 

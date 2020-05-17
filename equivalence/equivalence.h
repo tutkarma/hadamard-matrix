@@ -7,8 +7,7 @@
 #include "matrix.h"
 
 
-// void min_matrix(Matrix H0);
-int find_min_matrix(Matrix H0, struct timespec *max_wait);
+int find_min_matrix(Matrix H0);
 void *min_matrix(void *arg);
 Matrix get_result();
 void reset();

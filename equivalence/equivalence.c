@@ -214,7 +214,6 @@ void core(TUint order, TUint r, bool flag)
     matrix_destroy(M);
 }
 
-//void min_matrix(Matrix H0)
 void *min_matrix(void *arg)
 {
     iteration = 0;
@@ -300,17 +299,20 @@ void reset()
     matrix_destroy(A);
 }
 
-int find_min_matrix(Matrix H0, struct timespec *max_wait)
+int find_min_matrix(Matrix H0)
 {
-    struct timespec abs_time;
+    struct timespec max_wait, abs_time;
+    memset(&max_wait, 0, sizeof(max_wait));
+    max_wait.tv_sec = 60;
+
     pthread_attr_t tattr;
     pthread_t tid;
     int err;
 
     pthread_mutex_lock(&calculating);
     clock_gettime(CLOCK_REALTIME, &abs_time);
-    abs_time.tv_sec += max_wait->tv_sec;
-    abs_time.tv_nsec += max_wait->tv_nsec;
+    abs_time.tv_sec += max_wait.tv_sec;
+    abs_time.tv_nsec += max_wait.tv_nsec;
 
     pthread_attr_init(&tattr);
     pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
