@@ -7,7 +7,7 @@
 
 Matrix matrix_create(TUint m, TUint n)
 {
-    Matrix matrix = malloc(sizeof(matrix));
+    Matrix matrix = (Matrix) malloc(sizeof(*matrix));
     if (!matrix) {
         printf("ERROR: malloc matrix");
         exit(MEMORY_ERROR);
@@ -35,7 +35,7 @@ Matrix matrix_create(TUint m, TUint n)
 
 Vector vector_create(TUint order)
 {
-    Vector vec = malloc(sizeof(vec));
+    Vector vec = malloc(sizeof(*vec));
     if (!vec) {
         printf("ERROR: malloc vector\n");
         exit(MEMORY_ERROR);

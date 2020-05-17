@@ -1,25 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <string.h>
 
 #include "equivalence.h"
 
 
 int main()
 {
-    Matrix mat1 = matrix_from_file("../data/h16_1");
+    struct timespec max_wait;
+    memset(&max_wait, 0, sizeof(max_wait));
+    max_wait.tv_sec = 60;
+
+    Matrix mat1 = matrix_from_file("../data/h32_1");
     printf("matrix1\n");
     debug_print(mat1);
     printf("min matrix1\n");
-    min_matrix(mat1);
+    find_min_matrix(mat1, &max_wait);
     Matrix res1 = get_result();
     debug_print(res1);
     reset();
 
-    Matrix mat2 = matrix_from_file("../data/h16_2");
+    Matrix mat2 = matrix_from_file("../data/h32_3");
     printf("matrix2\n");
     debug_print(mat2);
     printf("min matrix2\n");
-    min_matrix(mat2);
+    find_min_matrix(mat2, &max_wait);
     Matrix res2 = get_result();
     debug_print(res2);
 

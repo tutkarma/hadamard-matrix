@@ -4,6 +4,9 @@
 #include <math.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
+#include <pthread.h>
+#include <errno.h>
 
 #include "equivalence.h"
 
@@ -11,6 +14,10 @@
 Matrix A;
 Vector RC;
 Matrix H;
+uint64_t iteration;
+
+pthread_mutex_t calculating = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t done = PTHREAD_COND_INITIALIZER;
 
 void core(TUint order, TUint r, bool flag);
 void sort(Matrix matrix, TUint l, TUint r);
@@ -135,6 +142,11 @@ void column_sort(Matrix matrix)
 
 void core(TUint order, TUint r, bool flag)
 {
+    ++iteration;
+    if (iteration == 10000) {
+        pthread_cancel(pthread_self());
+    }
+
     if (r >= order - 1) {
         column_sort(H);
 
@@ -202,8 +214,14 @@ void core(TUint order, TUint r, bool flag)
     matrix_destroy(M);
 }
 
-void min_matrix(Matrix H0)
+//void min_matrix(Matrix H0)
+void *min_matrix(void *arg)
 {
+    iteration = 0;
+    int oldtype;
+    pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
+
+    Matrix H0 = arg;
     TUint order = H0->m;
     RC = vector_create(order);
     for (size_t i = 0; i < order; ++i) {
@@ -225,7 +243,10 @@ void min_matrix(Matrix H0)
         }
         H = H0;
     }
+
+    pthread_cond_signal(&done);
     vector_destroy(RC);
+    return NULL;
 }
 
 void negation_column(Matrix matrix, TUint column)
@@ -277,4 +298,30 @@ Matrix get_result()
 void reset()
 {
     matrix_destroy(A);
+}
+
+int find_min_matrix(Matrix H0, struct timespec *max_wait)
+{
+    struct timespec abs_time;
+    pthread_attr_t tattr;
+    pthread_t tid;
+    int err;
+
+    pthread_mutex_lock(&calculating);
+    clock_gettime(CLOCK_REALTIME, &abs_time);
+    abs_time.tv_sec += max_wait->tv_sec;
+    abs_time.tv_nsec += max_wait->tv_nsec;
+
+    pthread_attr_init(&tattr);
+    pthread_attr_setdetachstate(&tattr, PTHREAD_CREATE_DETACHED);
+    pthread_create(&tid, &tattr, min_matrix, H0);
+
+    err = pthread_cond_timedwait(&done, &calculating, &abs_time);
+
+    if (err == ETIMEDOUT)
+        fprintf(stderr, "%s: calculation timed out\n", __func__);
+    pthread_mutex_unlock(&calculating);
+    pthread_detach(tid);
+
+    return err;
 }

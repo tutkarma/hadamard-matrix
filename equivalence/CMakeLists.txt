@@ -1,3 +1,5 @@
+find_package(Threads)
+
 set(SOURCE_MAIN main.c)
 set(SOURCE_XOR matrix_xor.c)
 set(MATRIX_LIB matrix.c)
@@ -10,6 +12,7 @@ add_executable(matrix_xor ${SOURCE_XOR})
 
 
 target_link_libraries(equivalence m)
+target_link_libraries(equivalence ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(equivalence matrix)
 target_link_libraries(main matrix)
 target_link_libraries(main equivalence)
