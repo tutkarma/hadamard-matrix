@@ -3,6 +3,11 @@
 Work in progress
 
 
+### Run tests
+```bash
+./run_tests
+```
+
 ### References
 
 [Switching operations for Hadamard matrices. W. P. Orrick](https://arxiv.org/pdf/math/0507515.pdf)

@@ -1,6 +1,7 @@
 CMakeFiles/
 Testing/
 build/
+img/
 CMakeCache.txt
 Makefile
 *.a
