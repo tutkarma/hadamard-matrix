@@ -27,7 +27,7 @@ Matrix matrix_create(TUint m, TUint n);
 Vector vector_create(TUint order);
 void matrix_destroy(Matrix matrix);
 void vector_destroy(Vector vec);
-TInt matrix_size(Matrix matrix);
+TUint matrix_size(Matrix matrix);
 void matriscopy(Matrix destmat, Matrix srcmat);
 bool matrisequal(Matrix mat1, Matrix mat2);
 bool rowequal(Matrix mat1, TUint row1, Matrix mat2, TUint row2);

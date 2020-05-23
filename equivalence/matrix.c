@@ -67,7 +67,7 @@ void vector_destroy(Vector vec)
     free(vec);
 }
 
-TInt matrix_size(Matrix matrix)
+TUint matrix_size(Matrix matrix)
 {
     return matrix->n;
 }

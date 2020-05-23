@@ -27,9 +27,6 @@ TInt column_comp(Matrix matrix, TUint col1, TUint col2);
 void normalize(Matrix matrix);
 void swap_rows(Matrix matrix, TUint row1, TUint row2);
 void swap_columns(Matrix matrix, TUint col1, TUint col2);
-void negation_row(Matrix matrix, TUint row);
-void negation_column(Matrix matrix, TUint column);
-uint64_t ro(Matrix matrix);
 uint64_t ro2(Matrix matrix, TUint row);
 
 

@@ -12,5 +12,8 @@ void *min_matrix(void *arg);
 Matrix get_result();
 void reset();
 
+uint64_t ro(Matrix matrix);
+void negation_row(Matrix matrix, TUint row);
+void negation_column(Matrix matrix, TUint column);
 
 #endif
